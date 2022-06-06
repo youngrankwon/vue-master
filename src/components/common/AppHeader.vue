@@ -1,15 +1,12 @@
 <template>
-	<div>
-		<p>App Header</p>
-		<demo></demo>
-	</div>
+	<header>
+		<router-link to="/login">로그인</router-link> |
+		<router-link to="/signup">회원가입</router-link>
+	</header>
 </template>
 
 <script>
-import Demo from '@/demo/basic/Demo.vue';
-export default {
-	components: { Demo },
-};
+export default {};
 </script>
 
 <style></style>
