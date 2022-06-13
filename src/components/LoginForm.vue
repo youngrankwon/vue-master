@@ -1,25 +1,26 @@
 <template>
 	<div class="contents">
 		<div class="form-wrapper form-wrapper-sm">
-			<form v-on:submit.prevent="submitForm" class="form">
+			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label for="username">id: </label>
 					<input id="username" type="text" v-model="username" />
 				</div>
+				<p class="validation-text">
+					<span class="warning" v-if="!isUsernameValid && username">
+						Please enter an email address
+					</span>
+				</p>
 				<div>
-					<label for="password">pw: </label>
+					<label for="password">pw : </label>
 					<input id="password" type="text" v-model="password" />
 				</div>
-				<div>
-					<label for="nickname">nickname: </label>
-					<input id="nickname" type="text" v-model="nickname" />
-				</div>
 				<button
-					v-bind:disabled="!isUsernameValid || !password || !nickname"
+					v-bind:disabled="!isUsernameValid || !password"
 					type="submit"
 					class="btn"
 				>
-					회원가입
+					로그인
 				</button>
 			</form>
 			<p class="log">{{ logMessage }}</p>
@@ -28,15 +29,15 @@
 </template>
 
 <script>
-import { registerUser } from '@/api/index';
+import { loginUser } from '@/api/index';
 import { validateEmail } from '@/utils/validation';
+
 export default {
 	data() {
 		return {
-			// form value
+			// form values
 			username: '',
 			password: '',
-			nickname: '',
 			// log
 			logMessage: '',
 		};
@@ -52,24 +53,31 @@ export default {
 				const userData = {
 					username: this.username,
 					password: this.password,
-					nickname: this.nickname,
 				};
-				const { data } = await registerUser(userData);
-				console.log(data.username);
-				this.logMessage = `${data.username} 님이 가입되었습니다.`;
-				this.initForm();
+				const { data } = await loginUser(userData);
+				console.log(data.user.username);
+				this.$store.commit('setUsername', data.user.username);
+				this.$router.push('/main');
+				// this.logMessage = `${data.user.username} 님 환영합니다.`;
+				// this.initForm();
 			} catch (error) {
 				// 에러 핸들링할 코드
-				console.log(error);
+				console.log(error.response.data);
+				this.logMessage = error.response.data;
+			} finally {
+				this.initForm();
 			}
 		},
 		initForm() {
 			this.username = '';
 			this.password = '';
-			this.nickname = '';
 		},
 	},
 };
 </script>
 
-<style></style>
+<style>
+.btn {
+	color: white;
+}
+</style>
