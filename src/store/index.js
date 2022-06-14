@@ -1,3 +1,10 @@
+import { loginUser } from '@/api';
+import {
+	getAuthFromCookie,
+	getUserFromCookie,
+	saveAuthToCookie,
+	saveUserToCookie,
+} from '@/utils/cookies';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -5,8 +12,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		username: '',
-		token: '',
+		username: getUserFromCookie() || '',
+		token: getAuthFromCookie() || '',
 	},
 	getters: {
 		isLogin(state) {
@@ -22,6 +29,17 @@ export default new Vuex.Store({
 		},
 		setToken(state, token) {
 			state.token = token;
+		},
+	},
+	actions: {
+		async LOGIN({ commit }, userData) {
+			const { data } = await loginUser(userData);
+			console.log(data.token);
+			commit('setToken', data.token);
+			commit('setUsername', data.user.username);
+			saveAuthToCookie(data.token);
+			saveUserToCookie(data.user.username);
+			return data;
 		},
 	},
 });
