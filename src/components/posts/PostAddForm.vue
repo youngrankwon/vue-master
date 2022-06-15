@@ -44,7 +44,7 @@ export default {
 		},
 	},
 	methods: {
-		async submitForn() {
+		async submitForm() {
 			try {
 				const response = await createPost({
 					title: this.title,
