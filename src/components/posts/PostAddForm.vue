@@ -12,11 +12,13 @@
 					<textarea
 						id="contents"
 						type="text"
-						cols="40"
 						rows="5"
 						v-model="contents"
 					></textarea>
-					<p class="validation-text warning is ContentsTooLong">
+					<p
+						v-if="!isContentsValid"
+						class="validation-text warning isContentsTooLong"
+					>
 						Contents length must be less than 250
 					</p>
 				</div>
@@ -28,7 +30,7 @@
 </template>
 
 <script>
-import { createPost } from '@/api/index';
+import { createPost } from '@/api/posts';
 
 export default {
 	data() {

@@ -1,12 +1,13 @@
-import { loginUser } from '@/api';
+import Vue from 'vue';
+import Vuex from 'vuex';
+
 import {
 	getAuthFromCookie,
 	getUserFromCookie,
 	saveAuthToCookie,
 	saveUserToCookie,
 } from '@/utils/cookies';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { loginUser } from '@/api/auth';
 
 Vue.use(Vuex);
 
