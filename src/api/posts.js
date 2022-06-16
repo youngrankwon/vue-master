@@ -6,9 +6,14 @@ function fetchPosts() {
 	return posts.get('/');
 }
 
-//학슴 노트 데이터를 생성하는 API
+//학습 노트 데이터를 생성하는 API
 function createPost(postData) {
 	return posts.post('/', postData);
 }
 
-export { fetchPosts, createPost };
+//학습 노트 데이터를 삭제하는 API
+function deletePost(postId) {
+	return posts.delete(postId);
+}
+
+export { fetchPosts, createPost, deletePost };
